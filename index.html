@@ -46,6 +46,16 @@
             margin-top: 15px;
             font-weight: bold;
         }
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .forgot-password:hover {
+            color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -54,12 +64,13 @@
         <input type="password" id="password" placeholder="Enter Password" />
         <button onclick="checkPassword()">Submit</button>
         <p id="message"></p>
+        <p class="forgot-password" onclick="showHint()">Forgot Password?</p>
+        <p id="hint" style="display: none; color: gray; font-size: 14px;">Hint: Try using 'admin' as the password.</p>
     </div>
 
     <script>
         const validPasswords = [
            'ab51ne', 'ac19pe', 'ac46me', 'ai55ne', 'an43me', 'as88re', 'at20me', 'aw83ne', 'ay13ne', 'ay56ne', 'az23ne', 'ba75ne', 'ba54me', 'ba57mi', 'ba94ne', 'be00ne', 'be14ne', 'bo19ne', 'ch30ne', 'choone', 'cl63le', 'do00ne', 'ek60me', 'em00ne', 'et00ne', 'eu64ne', 'fe27ne', 'fo59ne', 'fo64ne', 'fo73ne', 'gr01ne', 'jo58ne', 'ke38ne', 'ki72ne', 'ki05mi', 'ki63me', 'ko47ne', 'ku76me', 'kw03ne', 'le36me', 'li94ne', 'lo94me', 'ma03me', 'ma23pe', 'mb17le', 'mb73ne', 'mc63ne', 'me88me', 'me90ne', 'mo37ne', 'mu01ne', 'na00ne', 'nc54me', 'nd26me', 'ne23ne', 'nf71mi', 'ng01ne', 'ng95me', 'tc84me', 'nk98ne', 'no41ne', 'no50ne', 'ns00ne', 'ns05le', 'ns27pe', 'ny59me', 'nyoone', 'on22mi', 'ov55ne', 'pa03me', 'pr20ne', 'ra93de', 'si88me', 'ng37me', 'so28me', 'so88me', 'ta10ne', 'ta02me', 'ta79ne', 'te14ne', 'te23ne', 'te50ne', 'ti10ne', 'ti93ne', 'to36ne', 'to42ne', 'wa00ne', 'aw59mi', 'yo84ne', 'zo34me', 'mb63sf', 'bi70sf', 'nk22sf', 'ng43sf', 'ng67sf', 'nn58sf', 'ke47sf', 'nj35tf', 'si20oe', 'mb13oe', 'rohit', 'utkarsh', 'anita', 'arunima', 'rohit', 'utkarsh', 'bisheline', 'njousi', 'admin', 's1', 's2', 's3', 's4', 's5', 's6', 's7'
-
         ];
 
         function checkPassword() {
@@ -77,6 +88,10 @@
                 message.style.color = "red";
                 message.textContent = "Access denied. Incorrect password.";
             }
+        }
+
+        function showHint() {
+            document.getElementById("hint").style.display = "block";
         }
 
         // Optional: Allow pressing Enter to submit

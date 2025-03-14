@@ -137,3 +137,159 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review System with Comments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .reviews {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .review {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .comments {
+            margin-top: 10px;
+            padding-left: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        .comment-form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Post a Review</h2>
+        <form id="review-form">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <select id="rating" required>
+                <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+                <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
+                <option value="3">⭐⭐⭐ Good (3)</option>
+                <option value="2">⭐⭐ Fair (2)</option>
+                <option value="1">⭐ Poor (1)</option>
+            </select>
+            <textarea id="review" placeholder="Write your review here..." required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+        <p id="status"></p>
+    </div>
+
+    <div class="container">
+        <h2>Recent Reviews</h2>
+        <div id="reviews" class="reviews"></div>
+    </div>
+
+    <script>
+        const webAppURL = "https://script.google.com/macros/s/AKfycbwZGNJt63_1alovEH9Cwu0gLcN-LF_SbdbnKxFYgDGF-wi6bSE4y9i7V8kn6Gr1v6Cd/exec";
+
+        document.getElementById("review-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = {
+                type: "review",
+                name: document.getElementById("name").value,
+                rating: document.getElementById("rating").value,
+                review: document.getElementById("review").value
+            };
+
+            fetch(webAppURL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            }).then(() => {
+                document.getElementById("status").innerText = "Review Submitted Successfully!";
+                document.getElementById("review-form").reset();
+                loadReviews();
+            });
+        });
+
+        function loadReviews() {
+            fetch(webAppURL + "?getReviews=true")
+                .then(response => response.json())
+                .then(data => {
+                    let reviewsHTML = "";
+                    data.forEach(review => {
+                        let commentsHTML = review.comments.map(comment =>
+                            `<div class="comments"><strong>${comment.name}:</strong> ${comment.comment}</div>`
+                        ).join("");
+
+                        reviewsHTML += `<div class="review">
+                            <strong>${review.name}</strong> - ⭐${review.rating}
+                            <p>${review.review}</p>
+                            ${commentsHTML}
+                            <div class="comment-form">
+                                <input type="text" placeholder="Your Name" id="comment-name-${review.id}" required>
+                                <input type="text" placeholder="Write a comment..." id="comment-text-${review.id}" required>
+                                <button onclick="submitComment(${review.id})">Comment</button>
+                            </div>
+                        </div>`;
+                    });
+                    document.getElementById("reviews").innerHTML = reviewsHTML;
+                });
+        }
+
+        function submitComment(reviewId) {
+            const formData = {
+                type: "comment",
+                reviewId: reviewId,
+                name: document.getElementById(`comment-name-${reviewId}`).value,
+                comment: document.getElementById(`comment-text-${reviewId}`).value
+            };
+
+            fetch(webAppURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            }).then(() => loadReviews());
+        }
+
+        loadReviews();
+    </script>
+</body>
+</html>
+

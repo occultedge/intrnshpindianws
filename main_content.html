@@ -135,8 +135,6 @@
 </body>
 </html>
 
-</body>
-</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,7 +222,7 @@
     </div>
 
     <script>
-        const webAppURL = "https://script.google.com/macros/s/AKfycbwFsGvX9MWiakXsmLQjVvCZgmjRhjlbqNE824HOAprKlffrAh4OZs9USKMVEjSowOB2/exec";
+        const webAppURL = "https://script.google.com/macros/s/AKfycbz1AfXq-xOVuIcJwCa461w7U_l7QJKWOoAbT9s_6xUgMqm5m-BcPJOhSpo74clIRwr7/exec";
 
         document.getElementById("review-form").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -241,21 +239,17 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                console.log("Response from server:", data);
-                document.getElementById("status").innerText = "Review Submitted Successfully!";
+                document.getElementById("status").innerText = data.message;
                 document.getElementById("review-form").reset();
-                loadReviews();  // Reload reviews after submission
+                loadReviews();
             })
-            .catch(error => {
-                console.error("Error submitting review:", error);
-                document.getElementById("status").innerText = "Error submitting review. Check console.";
-            });
+            .catch(error => console.error("Error:", error));
         });
 
         function loadReviews() {
-            fetch(webAppURL + "?getReviews=true")
+            fetch(webAppURL)
                 .then(response => response.json())
                 .then(data => {
                     let reviewsHTML = "";
@@ -276,37 +270,10 @@
                         </div>`;
                     });
                     document.getElementById("reviews").innerHTML = reviewsHTML;
-                })
-                .catch(error => {
-                    console.error("Error fetching reviews:", error);
-                    document.getElementById("reviews").innerText = "Error loading reviews.";
                 });
         }
 
-        function submitComment(reviewId) {
-            const formData = {
-                type: "comment",
-                reviewId: reviewId,
-                name: document.getElementById(`comment-name-${reviewId}`).value,
-                comment: document.getElementById(`comment-text-${reviewId}`).value
-            };
-
-            fetch(webAppURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log("Comment Response:", data);
-                loadReviews();  // Reload reviews to show new comments
-            })
-            .catch(error => {
-                console.error("Error submitting comment:", error);
-            });
-        }
-
-        loadReviews(); // Load reviews on page load
+        loadReviews();
     </script>
 </body>
 </html>

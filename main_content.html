@@ -141,109 +141,16 @@
     </div>
 </body>
 </html>
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review System</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-        .container { max-width: 600px; background: white; padding: 20px; margin: auto; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-        input, select, textarea { width: 100%; padding: 10px; margin-top: 8px; border-radius: 5px; border: 1px solid #ddd; }
-        button { background: #007bff; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        .reviews { margin-top: 20px; }
-        .review { background: #fff; padding: 10px; margin-top: 10px; border-radius: 5px; }
-        .comments { padding-left: 10px; color: #555; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h2>Post a Review</h2>
-    <form id="review-form">
-        <input type="text" id="name" placeholder="Your Name" required>
-        <select id="rating">
-            <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
-            <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
-            <option value="3">⭐⭐⭐ Good (3)</option>
-            <option value="2">⭐⭐ Fair (2)</option>
-            <option value="1">⭐ Poor (1)</option>
-        </select>
-        <textarea id="review" placeholder="Your review..." required></textarea>
-        <button type="submit">Submit Review</button>
-    </form>
-    <p id="status"></p>
-</div>
 
-<div class="container">
-    <h2>Recent Reviews</h2>
-    <div id="reviews"></div>
-</div>
-
-<script>
-const webAppURL = "YOUR_DEPLOYED_WEB_APP_URL"; // Replace this with your Web App URL
-
-document.getElementById("review-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    fetch(webAppURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            type: "review",
-            name: document.getElementById("name").value,
-            rating: document.getElementById("rating").value,
-            review: document.getElementById("review").value
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("status").textContent = data.message;
-        loadReviews();
-    })
-    .catch(err => console.error("Error:", err));
-});
-
-function loadReviews() {
-    fetch(webAppURL)
-    .then(res => res.json())
-    .then(reviews => {
-        document.getElementById("reviews").innerHTML = reviews.map(r => `
-            <div class="review">
-                <strong>${r.name}</strong> - ⭐${r.rating}<br>${r.review}
-                ${r.comments.map(c => `<div class="comments">${c.name}: ${c.comment}</div>`).join("")}
-                <div>
-                    <input type="text" placeholder="Name" id="comment-name-${r.id}">
-                    <input type="text" placeholder="Comment" id="comment-text-${r.id}">
-                    <button onclick="submitComment(${r.id})">Add Comment</button>
-                </div>
-            `).join('');
-    });
-}
-
-function submitComment(reviewId) {
-    fetch(webAppURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            type: "comment",
-            reviewId: reviewId,
-            name: document.getElementById(`comment-name-${reviewId}`).value,
-            comment: document.getElementById(`comment-text-${reviewId}`).value
-        })
-        .then(() => loadReviews())
-        .catch(err => console.error("Error:", err));
-}
-
-loadReviews();
-</script>
-
-<div class="container">
-    <h2>Recent Reviews</h2>
-    <div id="reviews"></div>
-</div>
-
-</body>
-</html>
-
-
+<form action="https://formspree.io/f/xanenbjp" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <select name="rating">
+    <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+    <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
+    <option value="3">⭐⭐⭐ Good (3)</option>
+    <option value="2">⭐⭐ Fair (2)</option>
+    <option value="1">⭐ Poor (1)</option>
+  </select>
+  <textarea name="review" placeholder="Your Review" required></textarea>
+  <button type="submit">Submit Review</button>
+</form>

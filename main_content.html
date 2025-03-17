@@ -141,16 +141,87 @@
     </div>
 </body>
 </html>
-
-<form action="https://formspree.io/f/xanenbjp" method="POST">
-  <input type="text" name="name" placeholder="Your Name" required>
-  <select name="rating">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Internship Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 500px;
+      background-color: #ffffff;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Post a Review</h2>
+  <input type="text" id="name" placeholder="Your Name" required>
+  <select id="rating">
     <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
     <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
     <option value="3">⭐⭐⭐ Good (3)</option>
     <option value="2">⭐⭐ Fair (2)</option>
     <option value="1">⭐ Poor (1)</option>
   </select>
-  <textarea name="review" placeholder="Your Review" required></textarea>
-  <button type="submit">Submit Review</button>
-</form>
+  <textarea id="review" placeholder="Write your review here" required></textarea>
+  <button onclick="submitReview()">Submit Review</button>
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+const submitReview = () => {
+  fetch('https://swxndybdynqoaboybnvw.supabase.co/rest/v1/reviews', {
+    method: 'POST',
+    headers: {
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3eG5keWJkeW5xb2Fib3libnZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxNzc5MjksImV4cCI6MjA1Nzc1MzkyOX0.8ZFN1bGFboLvei2CFB58bwEI-LiJ35MC55j0Osvb5yI',
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify({
+      name: document.getElementById("name").value,
+      rating: parseInt(document.getElementById("rating").value),
+      review: document.getElementById("review").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("status").textContent = "Review submitted successfully!";
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById("status").textContent = "Error submitting review.";
+  });
+}
+</script>
+</body>
+</html>

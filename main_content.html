@@ -142,44 +142,18 @@
 
 <div class="container">
   <h1>Post your concern here and well Address it asap</h1>
-  <input type="text" id="name" placeholder="Your Name and passport No." required>
-  
-  <select id="rating">
+ <form action="https://formspree.io/f/xanenbjp" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <select name="rating">
     <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
     <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
     <option value="3">⭐⭐⭐ Good (3)</option>
     <option value="2">⭐⭐ Fair (2)</option>
     <option value="1">⭐ Poor (1)</option>
   </select>
-  <textarea id="review" placeholder="Write your issue here" required></textarea>
-  <button onclick="submitReview()">Submit</button>
-  <div class="status" id="status"></div>
-</div>
+  <textarea name="review" placeholder="Your Review" required></textarea>
+  <button type="submit">Submit Review</button>
+</form>
 
-<script>
-const submitReview = () => {
-  fetch('https://swxndybdynqoaboybnvw.supabase.co/rest/v1/reviews', {
-    method: 'POST',
-    headers: {
-      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3eG5keWJkeW5xb2Fib3libnZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxNzc5MjksImV4cCI6MjA1Nzc1MzkyOX0.8ZFN1bGFboLvei2CFB58bwEI-LiJ35MC55j0Osvb5yI',
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify({
-      name: document.getElementById("name").value,
-      rating: parseInt(document.getElementById("rating").value),
-      review: document.getElementById("review").value
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("status").textContent = "Issue submitted successfully! well address it ASAP";
-  })
-  .catch(err => {
-    console.error(err);
-    document.getElementById("status").textContent = "Error submitting review.";
-  });
-}
-</script>
 </body>
 </html>

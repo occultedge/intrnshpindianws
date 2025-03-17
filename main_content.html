@@ -139,53 +139,11 @@
             </li>
         </ul>
     </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Internship Reviews</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      width: 500px;
-      background-color: #ffffff;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .status {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+
 <div class="container">
-  <h2>Post a Review</h2>
-  <input type="text" id="name" placeholder="Your Name" required>
+  <h1>Post your concern here and well Address it asap</h1>
+  <input type="text" id="name" placeholder="Your Name and passport No." required>
+  
   <select id="rating">
     <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
     <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
@@ -193,8 +151,8 @@
     <option value="2">⭐⭐ Fair (2)</option>
     <option value="1">⭐ Poor (1)</option>
   </select>
-  <textarea id="review" placeholder="Write your review here" required></textarea>
-  <button onclick="submitReview()">Submit Review</button>
+  <textarea id="review" placeholder="Write your issue here" required></textarea>
+  <button onclick="submitReview()">Submit</button>
   <div class="status" id="status"></div>
 </div>
 
@@ -215,7 +173,7 @@ const submitReview = () => {
   })
   .then(res => res.json())
   .then(data => {
-    document.getElementById("status").textContent = "Review submitted successfully!";
+    document.getElementById("status").textContent = "Issue submitted successfully! well address it ASAP";
   })
   .catch(err => {
     console.error(err);
